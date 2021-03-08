@@ -1,24 +1,24 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+
 require 'date'
 require 'optparse'
 
-params = ARGV.getopts("","y:#{Date.today.year}", "m:#{Date.today.mon}")
-mon = params["m"].to_i
-year = params["y"].to_i
+params = ARGV.getopts('', "y:#{Date.today.year}", "m:#{Date.today.mon}")
+month = params['m'].to_i
+year = params['y'].to_i
 
-firstday_wday = Date.new(year,mon,1).wday
-lastday_date = Date.new(year,mon,-1).day
-week = %w(Su Mo Tu We Th Fr Sa)
+first_date_wday = Date.new(year, month, 1).wday
+last_date_day = Date.new(year, month, -1).day
+week = %w[Su Mo Tu We Th Fr Sa]
 
-puts "#{mon}月 #{year}年".center(20)
-puts week.join(" ")
-print "   " * firstday_wday
-wday = firstday_wday
-(1..lastday_date).each do |date|
-  print date.to_s.rjust(2) + " "
+puts "#{month}月 #{year}年".center(20)
+puts week.join(' ')
+print '   ' * first_date_wday
+wday = first_date_wday
+(1..last_date_day).each do |date|
+  print "#{date.to_s.rjust(2)} "
   wday += 1
-  if wday % 7 == 0
-    print "\n"
-  end
+  print "\n" if (wday % 7).zero?
 end
-puts ""
+puts
