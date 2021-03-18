@@ -14,10 +14,7 @@ scores.each do |score|
   end
 end
 
-frames = []
-shots.each_slice(2) do |n|
-  frames << n
-end
+frames = shots.each_slice(2).to_a
 
 frames.each_with_index do |frame, i|
   if frame[0] == 10
@@ -36,26 +33,19 @@ when 12
   2.times { frames.delete_at(10) }
 end
 
-point = 0
-
-frames.each_with_index do |frame, i|
+point = frames.each_with_index.sum(0) do |frame, i|
   if frame[0] == 10 && i <= 7
-    point += 10
-    point +=
-      if frames[i + 1][0] == 10
-        frames[i + 1][0] + frames[i + 2][0]
-      else
-        frames[i + 1][0] + frames[i + 1][1]
-      end
+    if frames[i + 1][0] == 10
+      10 + frames[i + 1][0] + frames[i + 2][0]
+    else
+      10 + frames[i + 1][0] + frames[i + 1][1]
+    end
   elsif frame[0] == 10 && i == 8
-    point += 10
-    point += frames[i + 1][0]
-    point += frames[i + 1][1]
+    10 + frames[i + 1][0] + frames[i + 1][1]
   elsif frame.sum == 10 && i <= 8
-    point += 10
-    point += frames[i + 1][0]
+    10 + frames[i + 1][0]
   else
-    point += frame.sum
+    frame.sum
   end
 end
 puts point
