@@ -16,7 +16,7 @@ end
 lists = Dir.glob('*')
 if option[:a]
   # aオプション .を含むファイル名もlistsに加える
-  lists = Dir.glob('.*').reject { |x| x =~ /\.$/ } + Dir.glob('*')
+  lists = Dir.glob('.*') + Dir.glob('*')
 end
 
 if option[:r]
