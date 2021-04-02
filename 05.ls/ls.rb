@@ -49,9 +49,10 @@ if option[:l]
   files.each do |file|
     file_stat = File::Stat.new(file)
     file_type = omit_type(file_stat.ftype)
-    owner_mode = convert_octal_to_rwx(file_stat.mode.to_s(8).slice(-3, 1))
-    group_mode = convert_octal_to_rwx(file_stat.mode.to_s(8).slice(-2, 1))
-    other_mode = convert_octal_to_rwx(file_stat.mode.to_s(8).slice(-1, 1))
+    mode_octal = file_stat.mode.to_s(8)
+    owner_mode = convert_octal_to_rwx(mode_octal.slice(-3, 1))
+    group_mode = convert_octal_to_rwx(mode_octal.slice(-2, 1))
+    other_mode = convert_octal_to_rwx(mode_octal.slice(-1, 1))
     file_link = file_stat.nlink
     owner_name = Etc.getpwuid(file_stat.uid).name
     group_name = Etc.getgrgid(file_stat.gid).name
