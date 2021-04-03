@@ -11,8 +11,7 @@ OptionParser.new do |option_parser|
   option_parser.parse!(ARGV)
 end
 
-files = Dir.glob('*')
-files = Dir.glob('*', File::FNM_DOTMATCH) if option[:a]
+files = option[:a] ? Dir.glob('*', File::FNM_DOTMATCH) : Dir.glob('*')
 files = files.reverse if option[:r]
 
 CONVERSION_RULE = {
@@ -62,18 +61,15 @@ if option[:l]
     print "#{file_type}#{owner_mode}#{group_mode}#{other_mode} #{file_link.to_s.rjust(2)} "
     print "#{owner_name} #{group_name} #{file_size.to_s.rjust(6)} #{file_time} #{file_name}\n"
   end
-
 else
   INDICATION_LINE = 3
   longest_file_name = files.max_by(&:length)
-
-  files.push('') while (files.size % INDICATION_LINE).positive?
+  files.push('') while (files.size % INDICATION_LINE).nonzero?
   sliced_files = files.each_slice(files.size / INDICATION_LINE).to_a
   transposed_files = sliced_files.transpose
-
   transposed_files.each do |transposed_file|
-    transposed_file.each do |file|
-      print file.ljust(longest_file_name.length + 1)
+    transposed_file.each do |file_name|
+      print file_name.ljust(longest_file_name.length + 1)
     end
     puts
   end
