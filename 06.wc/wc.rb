@@ -42,30 +42,29 @@ def show_status
   end
 end
 
+def count_total_file_lines
+  ARGV.sum { |file_path|  File.read(file_path).lines.size }
+end
+
+def count_total_file_words
+  ARGV.sum { |file_path|  File.read(file_path).split(/\s+/).size }
+end
+
+def count_total_file_bytesize
+  ARGV.sum { |file_path|  File.read(file_path).bytesize }
+end
+
 if option[:l]
   show_status_loption
 else
   show_status
 end
 
-total_file_lines = 0
-total_file_words = 0
-total_file_byte_size = 0
 if ARGV.size > 1
   if option[:l]
-    ARGV.each do |file_path|
-      file = File.read(file_path)
-      total_file_lines += file.lines.size
-    end
-    puts "#{total_file_lines.to_s.rjust(8)} total"
+    puts "#{count_total_file_lines.to_s.rjust(8)} total"
   else
-    ARGV.each do |file_path|
-      file = File.read(file_path)
-      total_file_lines += file.lines.size
-      total_file_words += file.split(/\s+/).size
-      total_file_byte_size += file.bytesize
-    end
-    print "#{total_file_lines.to_s.rjust(8)} #{total_file_words.to_s.rjust(7)}"
-    puts "#{total_file_byte_size.to_s.rjust(8)} total"
+    print "#{count_total_file_lines.to_s.rjust(8)} #{count_total_file_words.to_s.rjust(7)}"
+    puts "#{count_total_file_bytesize.to_s.rjust(8)} total"
   end
 end
